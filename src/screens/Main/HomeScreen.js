@@ -1,23 +1,32 @@
 import React from 'react';
 import {View, Text, StyleSheet, Button} from 'react-native';
-import {connect} from 'react-redux';
+import {useSelector} from 'react-redux';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
-import {actions} from '../../redux/slices/auth.slice';
+import {routes, goBack} from '../../utils/navigator';
 
-const HomeScreen = props => {
+const HomeScreen = ({componentId}) => {
+  //   const isAuthenticated = useSelector(state => !!state.auth.token);
+  const isAuthenticated = useSelector(state => state.auth.isLoggedIn);
+  const isLoading = useSelector(state => state.auth.isLoading);
+
   return (
     <View style={styles.homeContainer}>
-      <Text>{props.auth?.isLoading}</Text>
+      <Text>{isLoading}</Text>
+      <Text>{isAuthenticated ? 'Da dang nhap' : 'Chua dang nhap'}</Text>
       <Button
+        title="goBack"
         onPress={() => {
           //test purpose
-          actions.loginRequest();
+          goBack(componentId);
         }}
       />
+      <Icon name="music" size={30} color="#900" />
     </View>
   );
 };
 
+HomeScreen.screenName = routes.Home;
 HomeScreen.options = {
   topBar: {
     title: {
@@ -40,8 +49,4 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = state => ({
-  auth: state.auth,
-});
-
-export default connect(mapStateToProps, actions)(HomeScreen);
+export default HomeScreen;

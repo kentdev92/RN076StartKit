@@ -7,6 +7,12 @@ import * as colors from '../themes/colors';
 
 const currentScreen = new Map();
 
+const routes = {
+  Loading: 'LoadingScreen',
+  Login: 'LoginScreen',
+  Home: 'HomeScreen',
+};
+
 const setRoot = (screenName, passProps = {}) => {
   Navigation.setRoot({
     root: {
@@ -226,4 +232,5 @@ export {
   setRootUser,
   setTabIndex,
   showModal,
+  routes,
 };

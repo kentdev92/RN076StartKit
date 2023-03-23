@@ -4,7 +4,7 @@
 
 import {Navigation} from 'react-native-navigation';
 
-import {setRoot, currentScreen} from './src/utils/navigator';
+import {setRoot, currentScreen, routes} from './src/utils/navigator';
 import {registeredScreens} from './src/screens/registeredScreens';
 import {store} from './src/redux/configureStore';
 // import './src/themes';
@@ -12,7 +12,7 @@ import {store} from './src/redux/configureStore';
 
 registeredScreens(store);
 Navigation.events().registerAppLaunchedListener(() => {
-  setRoot('LoadingScreen');
+  setRoot(routes.Loading);
 });
 Navigation.events().registerComponentDidAppearListener(
   ({componentId, componentName, passProps}) => {

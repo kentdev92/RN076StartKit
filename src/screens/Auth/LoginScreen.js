@@ -1,23 +1,48 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {View, Text, StyleSheet, Button} from 'react-native';
-import {connect} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import {actions} from '../../redux/slices/auth.slice';
+import {navigateToScreen, setRoot, routes} from '../../utils/navigator';
 
-const LoginScreen = props => {
+const LoginScreen = ({componentId}) => {
+  const isAuthenticated = useSelector(state => state.auth.isLoggedIn);
+  const isLoading = useSelector(state => state.auth.isLoading);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      setRoot(routes.Loading);
+    }
+  }, [isAuthenticated]);
+
   return (
     <View style={styles.homeContainer}>
-      <Text>{props.auth?.isLoading}</Text>
+      <Text>{isLoading}</Text>
+      <Text>{isAuthenticated ? 'Da dang nhap' : 'Chua dang nhap'}</Text>
       <Button
+        title="Push To Home Test"
         onPress={() => {
           //test purpose
-          actions.loginRequest();
+          console.log('test logout');
+          navigateToScreen(componentId, 'HomeScreen');
         }}
       />
+      <Button
+        title="Logout Request"
+        onPress={() => {
+          //test purpose
+          console.log('test logout');
+          dispatch(actions.logOut());
+        }}
+      />
+      <Icon name="music" size={30} color="#900" />
     </View>
   );
 };
 
+LoginScreen.screenName = routes.Login;
 LoginScreen.options = {
   topBar: {
     title: {
@@ -40,8 +65,4 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = state => ({
-  auth: state.auth,
-});
-
-export default connect(mapStateToProps, actions)(LoginScreen);
+export default LoginScreen;

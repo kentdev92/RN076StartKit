@@ -1,15 +1,23 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {View, Text, StyleSheet, Button} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import {actions} from '../../redux/slices/auth.slice';
+import {setRoot, routes} from '../../utils/navigator';
 
 const LoadingScreen = () => {
   //   const isAuthenticated = useSelector(state => !!state.auth.token);
   const isAuthenticated = useSelector(state => state.auth.isLoggedIn);
   const isLoading = useSelector(state => state.auth.isLoading);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      setRoot(routes.Login);
+    }
+  }, [isAuthenticated]);
+
   return (
     <View style={styles.homeContainer}>
       <Text>{isLoading}</Text>
@@ -38,6 +46,7 @@ const LoadingScreen = () => {
   );
 };
 
+LoadingScreen.screenName = routes.Loading;
 LoadingScreen.options = {
   topBar: {
     title: {
@@ -59,7 +68,5 @@ const styles = StyleSheet.create({
     backgroundColor: 'whitesmoke',
   },
 });
-
-export const name = 'LoadingScreen';
 
 export default LoadingScreen;
