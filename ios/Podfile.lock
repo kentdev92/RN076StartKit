@@ -398,6 +398,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - Yoga
   - SocketRocket (0.6.0)
+  - SVProgressHUD (2.2.5)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
@@ -463,6 +464,7 @@ DEPENDENCIES:
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
+  - SVProgressHUD
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -482,6 +484,7 @@ SPEC REPOS:
     - libevent
     - OpenSSL-Universal
     - SocketRocket
+    - SVProgressHUD
     - YogaKit
 
 EXTERNAL SOURCES:
@@ -612,9 +615,10 @@ SPEC CHECKSUMS:
   RNGestureHandler: 071d7a9ad81e8b83fe7663b303d132406a7d8f39
   RNReanimated: 0a5f87ec1da472cca3e835333fdebe51d983c411
   SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
+  SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   Yoga: 99caf8d5ab45e9d637ee6e0174ec16fbbb01bcfc
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: e57a38e57c40bc0f5026b8fee57d1da27e7d04af
+PODFILE CHECKSUM: a1d755297b0c47dbaa2c4780cbf62575112ac41a
 
 COCOAPODS: 1.11.3

@@ -7,6 +7,9 @@ install! 'cocoapods', :deterministic_uuids => false
 target 'RN076StartKit' do
   config = use_native_modules!
 
+   #another libs
+   pod 'SVProgressHUD'
+
   # Flags change depending on the env values.
   flags = get_default_flags()
 

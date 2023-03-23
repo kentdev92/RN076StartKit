@@ -1,6 +1,5 @@
 package com.rn076startkit;
 
-import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
 import com.reactnativenavigation.NavigationApplication;
@@ -9,7 +8,6 @@ import com.facebook.react.ReactNativeHost;
 import com.reactnativenavigation.react.NavigationReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.config.ReactFeatureFlags;
-import com.facebook.soloader.SoLoader;
 import com.rn076startkit.newarchitecture.MainApplicationReactNativeHost;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
@@ -29,6 +27,7 @@ public class MainApplication extends NavigationApplication {
           List<ReactPackage> packages = new PackageList(this).getPackages();
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
+          packages.add(new CustomPackage());
           return packages;
         }
 

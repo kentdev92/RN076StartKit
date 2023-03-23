@@ -30,6 +30,8 @@
 		BA048D3B29CB0B1F00D8ABA2 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BA048D2B29CB0B1F00D8ABA2 /* Octicons.ttf */; };
 		BA048D3C29CB0B1F00D8ABA2 /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BA048D2C29CB0B1F00D8ABA2 /* FontAwesome5_Regular.ttf */; };
 		BA048D3D29CB0B1F00D8ABA2 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BA048D2D29CB0B1F00D8ABA2 /* SimpleLineIcons.ttf */; };
+		BA048D4029CC182A00D8ABA2 /* LoadingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BA048D3F29CC182A00D8ABA2 /* LoadingManager.m */; };
+		BA048D4529CC18B900D8ABA2 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA048D4429CC18B900D8ABA2 /* File.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,6 +77,10 @@
 		BA048D2B29CB0B1F00D8ABA2 /* Octicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		BA048D2C29CB0B1F00D8ABA2 /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
 		BA048D2D29CB0B1F00D8ABA2 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
+		BA048D3F29CC182A00D8ABA2 /* LoadingManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoadingManager.m; sourceTree = "<group>"; };
+		BA048D4229CC184B00D8ABA2 /* LoadingManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoadingManager.h; sourceTree = "<group>"; };
+		BA048D4329CC18B900D8ABA2 /* RN076StartKit-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RN076StartKit-Bridging-Header.h"; sourceTree = "<group>"; };
+		BA048D4429CC18B900D8ABA2 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -118,12 +124,15 @@
 		13B07FAE1A68108700A75B9A /* RN076StartKit */ = {
 			isa = PBXGroup;
 			children = (
+				BA048D3E29CC17F700D8ABA2 /* Loading */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				BA048D4429CC18B900D8ABA2 /* File.swift */,
+				BA048D4329CC18B900D8ABA2 /* RN076StartKit-Bridging-Header.h */,
 			);
 			name = RN076StartKit;
 			sourceTree = "<group>";
@@ -183,6 +192,15 @@
 				00E356EE1AD99517003FC87E /* RN076StartKitTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		BA048D3E29CC17F700D8ABA2 /* Loading */ = {
+			isa = PBXGroup;
+			children = (
+				BA048D3F29CC182A00D8ABA2 /* LoadingManager.m */,
+				BA048D4229CC184B00D8ABA2 /* LoadingManager.h */,
+			);
+			path = Loading;
 			sourceTree = "<group>";
 		};
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
@@ -255,7 +273,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						LastSwiftMigration = 1120;
+						LastSwiftMigration = 1340;
 					};
 				};
 			};
@@ -477,7 +495,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
+				BA048D4529CC18B900D8ABA2 /* File.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				BA048D4029CC182A00D8ABA2 /* LoadingManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -496,6 +516,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5B7EB9410499542E8C5724F5 /* Pods-RN076StartKit-RN076StartKitTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -523,6 +544,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 89C6BE57DB24E9ADA2F236DE /* Pods-RN076StartKit-RN076StartKitTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = RN076StartKitTests/Info.plist;
@@ -563,6 +585,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = RN076StartKit;
+				SWIFT_OBJC_BRIDGING_HEADER = "RN076StartKit-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -588,6 +611,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = RN076StartKit;
+				SWIFT_OBJC_BRIDGING_HEADER = "RN076StartKit-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
