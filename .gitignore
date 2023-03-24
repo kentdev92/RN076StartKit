@@ -19,6 +19,8 @@ xcuserdata
 DerivedData
 *.hmap
 *.ipa
+*.apk
+*.jks
 *.xcuserstate
 ios/.xcode.env.local
 
