@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, Button, Pressable} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import codePush from 'react-native-code-push';
 import {useTranslation} from 'react-i18next';
 import Animated, {
   useSharedValue,
@@ -12,6 +13,11 @@ import Animated, {
 import {actions} from '../../redux/slices/auth.slice';
 import {setRoot, routes} from '../../utils/navigator';
 
+const codePushOptions = {
+  updateDialog: true,
+  checkFrequency: codePush.CheckFrequency.ON_APP_RESUME,
+  installMode: codePush.InstallMode.IMMEDIATE,
+};
 const LoadingScreen = () => {
   //   const isAuthenticated = useSelector(state => !!state.auth.token);
   const isAuthenticated = useSelector(state => state.auth.isLoggedIn);
@@ -101,7 +107,7 @@ LoadingScreen.options = {
       textAlign: 'left',
     },
     background: {
-      color: 'purple',
+      color: 'blue',
     },
   },
 };
@@ -111,7 +117,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'whitesmoke',
+    backgroundColor: 'green',
   },
   box: {
     backgroundColor: 'blue',
@@ -121,4 +127,5 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoadingScreen;
+const App = codePush(codePushOptions)(LoadingScreen);
+export default App;

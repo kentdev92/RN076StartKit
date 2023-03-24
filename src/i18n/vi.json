@@ -2,6 +2,7 @@
     "translation": {
         "Login": "Đăng nhập",
         "SignUp": "Đăng ký",
-        "GoHome": "Qua Màn Chính"
+        "GoHome": "Qua Màn Chính",
+        "LoggedIn": "Bạn đã đăng nhập"
     }
 }

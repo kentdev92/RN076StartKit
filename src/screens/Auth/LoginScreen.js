@@ -11,7 +11,7 @@ const LoginScreen = ({componentId}) => {
   const isAuthenticated = useSelector(state => state.auth.isLoggedIn);
   const isLoading = useSelector(state => state.auth.isLoading);
   const dispatch = useDispatch();
-  const {t, i18n} = useTranslation();
+  const {t} = useTranslation();
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -22,7 +22,7 @@ const LoginScreen = ({componentId}) => {
   return (
     <View style={styles.homeContainer}>
       <Text>{isLoading}</Text>
-      <Text>{isAuthenticated ? 'Da dang nhap' : 'Chua dang nhap'}</Text>
+      <Text>{isAuthenticated ? t('LoggedIn') : 'Chua dang nhap'}</Text>
       <Button
         title={t('GoHome')}
         onPress={() => {

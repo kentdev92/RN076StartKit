@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">RN076StartKit</string>
+     <string moduleConfig="true" name="CodePushDeploymentKey">IV2eRcMMgiUNhyFhCQVVnSa6peC_Htr20xWX1</string>
 </resources>

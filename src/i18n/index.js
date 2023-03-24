@@ -5,6 +5,7 @@ import en from './en.json';
 import vi from './vi.json';
 
 i18n.use(initReactI18next).init({
+  compatibilityJSON: 'v3', //<--- add this line.
   lng: 'en',
   fallbackLng: 'en',
   resources: {
