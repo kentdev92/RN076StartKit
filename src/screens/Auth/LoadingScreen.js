@@ -3,6 +3,11 @@ import {View, Text, StyleSheet, Button, Pressable} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useTranslation} from 'react-i18next';
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withSpring,
+} from 'react-native-reanimated';
 
 import {actions} from '../../redux/slices/auth.slice';
 import {setRoot, routes} from '../../utils/navigator';
@@ -14,7 +19,24 @@ const LoadingScreen = () => {
   const dispatch = useDispatch();
   const {t, i18n} = useTranslation();
 
+  const offset = useSharedValue(0);
+  const animatedStyles = useAnimatedStyle(() => {
+    return {
+      transform: [
+        {
+          translateX: withSpring(offset.value * 255),
+        },
+      ],
+    };
+  });
+
   const [currentLanguage, setLanguage] = useState(i18n.language);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      setRoot(routes.Login);
+    }
+  }, [isAuthenticated]);
 
   const changeLanguage = value => {
     i18n
@@ -22,12 +44,6 @@ const LoadingScreen = () => {
       .then(() => setLanguage(value))
       .catch(err => console.log(err));
   };
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      setRoot(routes.Login);
-    }
-  }, [isAuthenticated]);
 
   return (
     <View style={styles.homeContainer}>
@@ -69,6 +85,9 @@ const LoadingScreen = () => {
         <Text>Tiếng Việt</Text>
       </Pressable>
       <Icon name="music" size={30} color="#900" />
+
+      <Animated.View style={[styles.box, animatedStyles]} />
+      <Button onPress={() => (offset.value = Math.random())} title="Move" />
     </View>
   );
 };
@@ -93,6 +112,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'whitesmoke',
+  },
+  box: {
+    backgroundColor: 'blue',
+    width: 40,
+    height: 40,
+    borderRadius: 5,
   },
 });
 
