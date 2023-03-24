@@ -1,7 +1,8 @@
-import React, {useEffect} from 'react';
-import {View, Text, StyleSheet, Button} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, Text, StyleSheet, Button, Pressable} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {useTranslation} from 'react-i18next';
 
 import {actions} from '../../redux/slices/auth.slice';
 import {setRoot, routes} from '../../utils/navigator';
@@ -11,6 +12,16 @@ const LoadingScreen = () => {
   const isAuthenticated = useSelector(state => state.auth.isLoggedIn);
   const isLoading = useSelector(state => state.auth.isLoading);
   const dispatch = useDispatch();
+  const {t, i18n} = useTranslation();
+
+  const [currentLanguage, setLanguage] = useState(i18n.language);
+
+  const changeLanguage = value => {
+    i18n
+      .changeLanguage(value)
+      .then(() => setLanguage(value))
+      .catch(err => console.log(err));
+  };
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -33,7 +44,7 @@ const LoadingScreen = () => {
         />
       ) : (
         <Button
-          title="Login Request"
+          title={t('Login')}
           onPress={() => {
             //test purpose
             console.log('test request');
@@ -41,6 +52,22 @@ const LoadingScreen = () => {
           }}
         />
       )}
+      <Pressable
+        onPress={() => changeLanguage('en')}
+        style={{
+          backgroundColor: currentLanguage === 'en' ? '#33A850' : '#d3d3d3',
+          padding: 20,
+        }}>
+        <Text>Select English</Text>
+      </Pressable>
+      <Pressable
+        onPress={() => changeLanguage('vi')}
+        style={{
+          backgroundColor: currentLanguage === 'vi' ? '#33A850' : '#d3d3d3',
+          padding: 20,
+        }}>
+        <Text>Tiếng Việt</Text>
+      </Pressable>
       <Icon name="music" size={30} color="#900" />
     </View>
   );

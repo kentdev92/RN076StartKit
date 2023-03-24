@@ -7,8 +7,7 @@ import {Navigation} from 'react-native-navigation';
 import {setRoot, currentScreen, routes} from './src/utils/navigator';
 import {registeredScreens} from './src/screens/registeredScreens';
 import {store} from './src/redux/configureStore';
-// import './src/themes';
-// import './src/configs';
+import './src/i18n';
 
 registeredScreens(store);
 Navigation.events().registerAppLaunchedListener(() => {
