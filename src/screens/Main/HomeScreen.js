@@ -1,109 +1,76 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, Button, FlatList} from 'react-native';
+import {View, Text, StyleSheet, Button, NativeModules} from 'react-native';
 import {useSelector} from 'react-redux';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import DocumentPicker from 'react-native-document-picker';
-import Pdf from 'react-native-pdf';
-import PDFLib, {PDFDocument, rgb} from 'react-native-pdf-lib';
-import * as FileSystem from 'react-native-fs';
+
+const {PDFPickerModule} = NativeModules;
 
 import {routes, goBack} from '../../utils/navigator';
+import {ScrollView} from 'react-native-gesture-handler';
+import iconv from 'iconv-lite';
+import {Buffer} from 'buffer';
+import {VietnameseConversion} from 'vietnamese-conversion';
 
 const HomeScreen = ({componentId}) => {
   //   const isAuthenticated = useSelector(state => !!state.auth.token);
   const isAuthenticated = useSelector(state => state.auth.isLoggedIn);
   const isLoading = useSelector(state => state.auth.isLoading);
 
-  const [pdfUri, setPdfUri] = useState(null);
-  const [totalPages, setTotalPages] = useState(0);
   const [extractedText, setExtractedText] = useState([]);
 
   const loadPdf = async () => {
-    try {
-      const result = await DocumentPicker.pick({
-        type: [DocumentPicker.types.pdf],
+    // Open the PDF picker and get the selected PDF file's URL
+    PDFPickerModule.openPDFPicker()
+      .then(pdfURL => {
+        console.log('Selected PDF URL:', pdfURL);
+
+        // Now, extract text from the selected PDF
+        PDFPickerModule.extractTextFromPDF(pdfURL)
+          .then(text => {
+            // console.log('Extracted text:', text);
+            // Now you can use the extracted text in your React Native app.
+            console.log(
+              'AFTER CONVERT: ',
+              text,
+              new VietnameseConversion(text, 'vni').toCharset('unicode'),
+              // iconv.decode(Buffer.from(text, 'binary'), 'tcvn3'),
+            );
+            setExtractedText(text);
+          })
+          .catch(error => {
+            console.error('Error extracting text:', error);
+          });
+      })
+      .catch(error => {
+        console.error('Error opening PDF picker:', error);
       });
-
-      const pdfUri = result[0].uri;
-      console.log(pdfUri);
-      setPdfUri(pdfUri);
-      extractTextFromPDF(pdfUri);
-    } catch (error) {
-      console.log('Document picker error:', error);
-    }
   };
 
-  const extractTextFromPDF = async pdfPath => {
+  // Function to convert TCVN3 to Unicode
+  const convertTCVN3ToUnicode = tcvn3Text => {
+    console.log('1');
     try {
-      const pdf = await PDFDocument.load(pdfPath);
-      const textArray = [];
-
-      for (let i = 0; i < pdf.getPagesCount(); i++) {
-        const page = pdf.getPage(i);
-        const pageText = await page.extractText();
-        textArray.push(pageText);
+      // Convert TCVN3 text to Unicode (UTF-8)
+      const tcvn3Buffer = new Uint8Array(tcvn3Text.length);
+      console.log('2', tcvn3Buffer);
+      for (let i = 0; i < tcvn3Text.length; i++) {
+        tcvn3Buffer[i] = tcvn3Text.charCodeAt(i);
       }
-
-      setExtractedText(textArray);
+      const unicodeText = iconv.decode(tcvn3Buffer, 'win1258');
+      console.log('after decode: ', unicodeText);
+      return unicodeText;
     } catch (error) {
-      console.error('Error extracting text from PDF:', error);
+      console.log('3');
+      console.log('Error converting TCVN3 to Unicode:', error);
+      return tcvn3Text; // Return the input text as-is on error
     }
   };
-  const applyStyles = async () => {
-    if (!pdfUri) return;
-
-    try {
-      const pdfDoc = await PDFDocument.modify(pdfUri);
-
-      for (let pageIndex = 0; pageIndex < totalPages; pageIndex++) {
-        const page = pdfDoc.getPage(pageIndex);
-        const texts = page.getTextContent().items;
-        texts.forEach(text => {
-          text.setFontColor(rgb(255, 255, 255));
-        });
-        page.setBackgroundColor(rgb(0, 0, 0));
-      }
-
-      const modifiedPdfPath = FileSystem.CachesDirectoryPath + '/modified.pdf';
-
-      await pdfDoc.write(modifiedPdfPath);
-
-      setPdfUri(modifiedPdfPath);
-    } catch (error) {
-      console.log('Error applying styles:', error);
-    }
-  };
-
-  const renderItem = ({item}) => (
-    <View style={styles.pageContainer}>
-      <Text style={styles.pageText}>{item}</Text>
-    </View>
-  );
 
   return (
     <View style={styles.homeContainer}>
-      <Text>{isLoading}</Text>
-      <Text>{isAuthenticated ? 'Da dang nhap' : 'Chua dang nhap'}</Text>
-      <Button title="Pick PDF" onPress={loadPdf} />
-      <Button
-        title="goBack"
-        onPress={() => {
-          //test purpose
-          goBack(componentId);
-        }}
-      />
-      <Icon name="music" size={30} color="#900" />
-      {pdfUri && (
-        <>
-          <View style={styles.container}>
-            <FlatList
-              data={extractedText}
-              renderItem={renderItem}
-              keyExtractor={(item, index) => index.toString()}
-            />
-          </View>
-        </>
-      )}
+      <ScrollView style={styles.container}>
+        <Button title="Pick PDF" onPress={loadPdf} />
+        <Text>{extractedText}</Text>
+      </ScrollView>
     </View>
   );
 };
@@ -125,8 +92,8 @@ HomeScreen.options = {
 const styles = StyleSheet.create({
   homeContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    // justifyContent: 'center',
+    // alignItems: 'center',
     backgroundColor: 'black',
   },
   pdf: {
@@ -141,8 +108,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   pageContainer: {
-    marginHorizontal: 20,
-    marginBottom: 20,
+    marginVertical: 20,
     backgroundColor: 'white',
     borderRadius: 8,
     elevation: 2,
