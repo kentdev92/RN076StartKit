@@ -45,18 +45,23 @@ RCT_EXPORT_METHOD(extractTextFromPDF:(NSString *)pdfURL
         @try {
             NSData *pdfData = [NSData dataWithContentsOfURL:url];
             PDFDocument *pdfDoc = [[PDFDocument alloc] initWithData:pdfData];
-            NSMutableString *text = [NSMutableString string];
+            NSMutableArray *textArray = [NSMutableArray array];
 
             for (NSInteger pageIndex = 0; pageIndex < pdfDoc.pageCount; pageIndex++) {
                 @autoreleasepool {
                     PDFPage *pdfPage = [pdfDoc pageAtIndex:pageIndex];
-                    [text appendString:[pdfPage string]];
-                    [text appendString:@"\n"]; // Add a newline character to separate lines
+                    NSString *pageText = [pdfPage string];
+                    NSString *fontFamily = [self detectFontFamilyForText:pageText];
+                    NSDictionary *textInfo = @{
+                        @"text": pageText,
+                        @"fontFamilyDetected": fontFamily
+                    };
+                    [textArray addObject:textInfo];
                 }
             }
 
             dispatch_async(dispatch_get_main_queue(), ^{
-                resolve(text);
+                resolve(textArray);
             });
         } @catch (NSException *exception) {
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -64,6 +69,13 @@ RCT_EXPORT_METHOD(extractTextFromPDF:(NSString *)pdfURL
             });
         }
     });
+}
+
+- (NSString *)detectFontFamilyForText:(NSString *)text {
+    // Implement logic to detect the font family for the given text.
+    // You can use regular expressions or other methods to determine the font.
+    // Replace the following line with your font detection logic.
+    return @"UnknownFont";
 }
 
 

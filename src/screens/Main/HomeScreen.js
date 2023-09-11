@@ -1,76 +1,63 @@
-import React, {useState} from 'react';
-import {View, Text, StyleSheet, Button, NativeModules} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Button,
+  NativeModules,
+  FlatList,
+} from 'react-native';
 import {useSelector} from 'react-redux';
 
 const {PDFPickerModule} = NativeModules;
 
 import {routes, goBack} from '../../utils/navigator';
 import {ScrollView} from 'react-native-gesture-handler';
-import iconv from 'iconv-lite';
-import {Buffer} from 'buffer';
-import {VietnameseConversion} from 'vietnamese-conversion';
+import VNIText from './VNIText';
 
 const HomeScreen = ({componentId}) => {
-  //   const isAuthenticated = useSelector(state => !!state.auth.token);
   const isAuthenticated = useSelector(state => state.auth.isLoggedIn);
   const isLoading = useSelector(state => state.auth.isLoading);
 
   const [extractedText, setExtractedText] = useState([]);
+  const [numLines, setNumLines] = useState(0);
 
   const loadPdf = async () => {
-    // Open the PDF picker and get the selected PDF file's URL
-    PDFPickerModule.openPDFPicker()
-      .then(pdfURL => {
-        console.log('Selected PDF URL:', pdfURL);
-
-        // Now, extract text from the selected PDF
-        PDFPickerModule.extractTextFromPDF(pdfURL)
-          .then(text => {
-            // console.log('Extracted text:', text);
-            // Now you can use the extracted text in your React Native app.
-            console.log(
-              'AFTER CONVERT: ',
-              text,
-              new VietnameseConversion(text, 'vni').toCharset('unicode'),
-              // iconv.decode(Buffer.from(text, 'binary'), 'tcvn3'),
-            );
-            setExtractedText(text);
-          })
-          .catch(error => {
-            console.error('Error extracting text:', error);
-          });
-      })
-      .catch(error => {
-        console.error('Error opening PDF picker:', error);
-      });
-  };
-
-  // Function to convert TCVN3 to Unicode
-  const convertTCVN3ToUnicode = tcvn3Text => {
-    console.log('1');
     try {
-      // Convert TCVN3 text to Unicode (UTF-8)
-      const tcvn3Buffer = new Uint8Array(tcvn3Text.length);
-      console.log('2', tcvn3Buffer);
-      for (let i = 0; i < tcvn3Text.length; i++) {
-        tcvn3Buffer[i] = tcvn3Text.charCodeAt(i);
-      }
-      const unicodeText = iconv.decode(tcvn3Buffer, 'win1258');
-      console.log('after decode: ', unicodeText);
-      return unicodeText;
+      const pdfURL = await PDFPickerModule.openPDFPicker();
+      console.log('Selected PDF URL:', pdfURL);
+
+      const textArray = await PDFPickerModule.extractTextFromPDF(pdfURL);
+      console.log('AFTER CONVERT:', textArray);
+      setExtractedText(textArray);
     } catch (error) {
-      console.log('3');
-      console.log('Error converting TCVN3 to Unicode:', error);
-      return tcvn3Text; // Return the input text as-is on error
+      console.error('Error:', error);
     }
   };
 
+  useEffect(() => {
+    // Update the number of lines whenever extractedText changes
+    setNumLines(extractedText.length);
+  }, [extractedText]);
+
+  // Render each item in the FlatList
+  const renderItem = ({item}) => (
+    <View style={styles.pageContainer}>
+      <VNIText selectable style={styles.pageText} text={item.text} />
+      {/* <Text  >
+        {item.text}
+      </Text> */}
+    </View>
+  );
+
   return (
     <View style={styles.homeContainer}>
-      <ScrollView style={styles.container}>
-        <Button title="Pick PDF" onPress={loadPdf} />
-        <Text>{extractedText}</Text>
-      </ScrollView>
+      <FlatList
+        ListHeaderComponent={<Button title="Get PDF" onPress={loadPdf} />}
+        data={extractedText}
+        renderItem={renderItem}
+        keyExtractor={(item, index) => index.toString()}
+      />
     </View>
   );
 };
@@ -84,7 +71,7 @@ HomeScreen.options = {
       textAlign: 'left',
     },
     background: {
-      color: 'purple',
+      color: 'black',
     },
   },
 };
@@ -92,31 +79,24 @@ HomeScreen.options = {
 const styles = StyleSheet.create({
   homeContainer: {
     flex: 1,
-    // justifyContent: 'center',
-    // alignItems: 'center',
     backgroundColor: 'black',
-  },
-  pdf: {
-    flex: 1,
-    // height: '200px',
-    width: '100%',
-    // backgroundColor: 'red',
   },
   container: {
     flex: 1,
-    backgroundColor: 'lightgray',
+    backgroundColor: 'black',
     padding: 20,
   },
   pageContainer: {
-    marginVertical: 20,
-    backgroundColor: 'white',
-    borderRadius: 8,
-    elevation: 2,
-    padding: 16,
+    marginVertical: 10,
+    backgroundColor: 'black',
+    borderRadius: 3,
+    // elevation: 2,
+    padding: 10,
+    borderColor: 'white',
+    // borderWidth: 1,
   },
   pageText: {
-    // fontFamily: 'CustomFont', // Use your custom font
-    fontSize: 16,
+    fontSize: 25,
   },
 });
 

@@ -1,0 +1,13 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "src/assets/fonts/vnitime.ttf",
+      "sha1": "0134f5cd4067cbeed8d7e0d3e0ba9bd03fd57d00"
+    },
+    {
+      "path": "src/assets/fonts/vntime.ttf",
+      "sha1": "2cfc5d49c8e1bfaf3692ee1d264c7806ac676d79"
+    }
+  ]
+}
