@@ -33,9 +33,6 @@
 		BA048D3D29CB0B1F00D8ABA2 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BA048D2D29CB0B1F00D8ABA2 /* SimpleLineIcons.ttf */; };
 		BA048D4029CC182A00D8ABA2 /* LoadingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BA048D3F29CC182A00D8ABA2 /* LoadingManager.m */; };
 		BA048D4529CC18B900D8ABA2 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA048D4429CC18B900D8ABA2 /* File.swift */; };
-		BAB8A93D2AAD9AC70092B961 /* PDFTextExtractor.m in Sources */ = {isa = PBXBuildFile; fileRef = BAB8A93C2AAD9AC70092B961 /* PDFTextExtractor.m */; };
-		BAB8A93F2AAD9B060092B961 /* PDFKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BAB8A93E2AAD9B060092B961 /* PDFKit.framework */; };
-		BAB8A9412AAD9B0B0092B961 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BAB8A9402AAD9B0B0092B961 /* MobileCoreServices.framework */; };
 		C9DCA9974051418199D05F35 /* vntime.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A21CE87D555A4B10B4F6326A /* vntime.ttf */; };
 /* End PBXBuildFile section */
 
@@ -89,7 +86,6 @@
 		BA048D4329CC18B900D8ABA2 /* RN076StartKit-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RN076StartKit-Bridging-Header.h"; sourceTree = "<group>"; };
 		BA048D4429CC18B900D8ABA2 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		BA37D4BC2AAE269D005105F4 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
-		BAB8A93C2AAD9AC70092B961 /* PDFTextExtractor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PDFTextExtractor.m; sourceTree = "<group>"; };
 		BAB8A93E2AAD9B060092B961 /* PDFKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PDFKit.framework; path = System/Library/Frameworks/PDFKit.framework; sourceTree = SDKROOT; };
 		BAB8A9402AAD9B0B0092B961 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		BAB8A9422AADBA510092B961 /* libmupdf.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmupdf.a; path = ../../../../mupdf/build/release/libmupdf.a; sourceTree = "<group>"; };
@@ -97,6 +93,7 @@
 		BAB8A94D2AADC0A10092B961 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = "../../../../openssl-3.0.10/libssl.a"; sourceTree = "<group>"; };
 		BACCD6C82AAE9D2700D2DACD /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		BACCD6CA2AAE9D4100D2DACD /* libc.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libc.tbd; path = usr/lib/libc.tbd; sourceTree = SDKROOT; };
+		BACCD6CE2AAEB61700D2DACD /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -113,8 +110,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BAB8A9412AAD9B0B0092B961 /* MobileCoreServices.framework in Frameworks */,
-				BAB8A93F2AAD9B060092B961 /* PDFKit.framework in Frameworks */,
 				0C80B921A6F3F58F76C31292 /* libPods-RN076StartKit.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -142,7 +137,6 @@
 		13B07FAE1A68108700A75B9A /* RN076StartKit */ = {
 			isa = PBXGroup;
 			children = (
-				BAB8A93C2AAD9AC70092B961 /* PDFTextExtractor.m */,
 				BA048D3E29CC17F700D8ABA2 /* Loading */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
@@ -159,6 +153,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BACCD6CE2AAEB61700D2DACD /* libiconv.tbd */,
 				BACCD6CA2AAE9D4100D2DACD /* libc.tbd */,
 				BACCD6C82AAE9D2700D2DACD /* libc++.tbd */,
 				BA37D4BC2AAE269D005105F4 /* libz.tbd */,
@@ -536,7 +531,6 @@
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
 				BA048D4529CC18B900D8ABA2 /* File.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
-				BAB8A93D2AAD9AC70092B961 /* PDFTextExtractor.m in Sources */,
 				BA048D4029CC182A00D8ABA2 /* LoadingManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -558,6 +552,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = MM93KB84KS;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -587,6 +582,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = MM93KB84KS;
 				INFOPLIST_FILE = RN076StartKitTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = (

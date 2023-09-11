@@ -11,7 +11,7 @@ import './src/i18n';
 
 registeredScreens(store);
 Navigation.events().registerAppLaunchedListener(() => {
-  setRoot(routes.Loading);
+  setRoot(routes.Home);
 });
 Navigation.events().registerComponentDidAppearListener(
   ({componentId, componentName, passProps}) => {
