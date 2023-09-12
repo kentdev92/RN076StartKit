@@ -1,15 +1,24 @@
 import React, {useState, useEffect} from 'react';
-import {Text, StyleSheet, FlatList} from 'react-native';
+import {Text, StyleSheet, FlatList, SafeAreaView} from 'react-native';
 import {useSelector} from 'react-redux';
 
 import PdfThumbnail from 'react-native-pdf-thumbnail';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+// import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import TextRecognition from '@react-native-ml-kit/text-recognition';
-import {View, Button} from 'react-native-ui-lib';
+import {
+  View,
+  //  Button
+} from 'react-native-ui-lib';
 import DocumentPicker from 'react-native-document-picker';
 import {Navigation} from 'react-native-navigation';
 import pdfTextExtract from '../../nativeModules/pdfTextExtract';
 import {routes} from '../../utils/navigator';
+
+import Animated, {
+  useSharedValue,
+  useAnimatedScrollHandler,
+} from 'react-native-reanimated';
+const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
 const HomeScreen = ({componentId}) => {
   const isAuthenticated = useSelector(state => state.auth.isLoggedIn);
@@ -17,6 +26,8 @@ const HomeScreen = ({componentId}) => {
 
   const [extractedText, setExtractedText] = useState([]);
   const [textSize, setTextSize] = useState(20);
+  const lastContentOffset = useSharedValue(0);
+  const isScrolling = useSharedValue(false);
 
   useEffect(() => {
     // first
@@ -24,6 +35,8 @@ const HomeScreen = ({componentId}) => {
     Navigation.mergeOptions(componentId, {
       topBar: {
         // visible: false,
+        drawBehind: true,
+
         hideOnScroll: true,
         leftButtons: [
           {
@@ -168,6 +181,31 @@ const HomeScreen = ({componentId}) => {
     }
   };
 
+  const scrollHandler = useAnimatedScrollHandler({
+    onScroll: event => {
+      if (lastContentOffset.value > event.contentOffset.y) {
+        if (isScrolling.value) {
+          Navigation.mergeOptions(componentId, {
+            topBar: {
+              visible: true,
+            },
+          });
+        }
+      } else if (lastContentOffset.value < event.contentOffset.y) {
+        if (isScrolling.value) {
+          console.log('DOWN');
+        }
+      }
+      lastContentOffset.value = event.contentOffset.y;
+    },
+    onBeginDrag: e => {
+      isScrolling.value = true;
+    },
+    onEndDrag: e => {
+      isScrolling.value = false;
+    },
+  });
+
   // Render each item in the FlatList
   const renderItem = ({item}) => (
     <View style={styles.pageContainer}>
@@ -179,7 +217,7 @@ const HomeScreen = ({componentId}) => {
 
   return (
     <View style={styles.homeContainer}>
-      <FlatList
+      <AnimatedFlatList
         // ListHeaderComponent={
         //   <View row spread centerV>
         //     <View row>
@@ -222,6 +260,7 @@ const HomeScreen = ({componentId}) => {
         //     </View>
         //   </View>
         // }
+        onScroll={scrollHandler}
         data={extractedText}
         renderItem={renderItem}
         keyExtractor={(item, index) => index.toString()}
