@@ -3,6 +3,9 @@
         "Login": "Đăng nhập",
         "SignUp": "Đăng ký",
         "GoHome": "Qua Màn Chính",
-        "LoggedIn": "Bạn đã đăng nhập"
+        "LoggedIn": "Bạn đã đăng nhập",
+        "Copy": "Sao chép",
+        "ChooseTheme": "Chọn giao diện:",
+        "FontSize": "Cỡ chữ:"
     }
 }

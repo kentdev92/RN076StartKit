@@ -56,7 +56,7 @@ RCT_EXPORT_METHOD(extractTextFromPDF:(NSString *)pdfURL
                 @autoreleasepool {
                     PDFPage *pdfPage = [pdfDoc pageAtIndex:pageIndex];
                     NSString *pageText = [pdfPage string];
-//                    NSString *fontFamily = [self detectFontFamilyForText:pageText];
+//                    NSString *fontFamily = [self detfectFontFamilyForText:pageText];
                     NSDictionary *textInfo = @{
                         @"text": pageText,
 //                        @"fontFamilyDetected": fontFamily

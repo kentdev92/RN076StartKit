@@ -18,7 +18,7 @@ const codePushOptions = {
   checkFrequency: codePush.CheckFrequency.ON_APP_RESUME,
   installMode: codePush.InstallMode.IMMEDIATE,
 };
-const LoadingScreen = () => {
+const LoadingScreen = ({componentId}) => {
   //   const isAuthenticated = useSelector(state => !!state.auth.token);
   const isAuthenticated = useSelector(state => state.auth.isLoggedIn);
   const isLoading = useSelector(state => state.auth.isLoading);

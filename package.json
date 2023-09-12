@@ -12,7 +12,9 @@
     "push:android": "appcenter codepush release-react -a hungcv1992/RN076StartKit-Android -d Staging"
   },
   "dependencies": {
+    "react-native-custom-select-text": "git+https://github.com/kentdev92/custom-select-text",
     "@react-native-async-storage/async-storage": "^1.17.12",
+    "@react-native-community/clipboard": "^1.5.1",
     "@react-native-ml-kit/text-recognition": "^1.2.1",
     "@reduxjs/toolkit": "^1.9.3",
     "add": "^2.0.6",

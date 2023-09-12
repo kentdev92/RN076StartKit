@@ -3,6 +3,9 @@
         "Login": "Login",
         "SignUp": "Sign Up",
         "GoHome": "GoHome",
-        "LoggedIn": "You're logged in!"
+        "LoggedIn": "You're logged in!",
+        "Copy": "Copy",
+        "ChooseTheme": "Choose theme:",
+        "FontSize": "Font size:"
     }
 }
