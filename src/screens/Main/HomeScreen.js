@@ -1,20 +1,82 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Text, StyleSheet, FlatList} from 'react-native';
 import {useSelector} from 'react-redux';
 
-import {routes} from '../../utils/navigator';
 import PdfThumbnail from 'react-native-pdf-thumbnail';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import TextRecognition from '@react-native-ml-kit/text-recognition';
 import {View, Button} from 'react-native-ui-lib';
 import DocumentPicker from 'react-native-document-picker';
+import {Navigation} from 'react-native-navigation';
+import pdfTextExtract from '../../nativeModules/pdfTextExtract';
+import {routes} from '../../utils/navigator';
 
-const HomeScreen = () => {
+const HomeScreen = ({componentId}) => {
   const isAuthenticated = useSelector(state => state.auth.isLoggedIn);
   const isLoading = useSelector(state => state.auth.isLoading);
 
   const [extractedText, setExtractedText] = useState([]);
   const [textSize, setTextSize] = useState(20);
+
+  useEffect(() => {
+    // first
+
+    Navigation.mergeOptions(componentId, {
+      topBar: {
+        // visible: false,
+        hideOnScroll: true,
+        leftButtons: [
+          {
+            id: 'mlKit',
+            text: 'MLKit',
+          },
+          {
+            id: 'pdfKit',
+            text: 'PDFKit',
+          },
+        ],
+        rightButtons: [
+          {
+            id: 'downFont',
+            text: 'F-',
+          },
+          {
+            id: 'upFont',
+            text: 'F+',
+          },
+        ],
+      },
+    });
+
+    // Subscribe
+    const navigationButtonEventListener =
+      Navigation.events().registerNavigationButtonPressedListener(
+        ({buttonId}) => {
+          switch (buttonId) {
+            case 'mlKit':
+              pickDocument();
+              break;
+            case 'pdfKit':
+              extractTextPDFkit();
+              break;
+            case 'downFont':
+              changeFontSize('down');
+              break;
+            case 'upFont':
+              changeFontSize('up');
+              break;
+            default:
+              break;
+          }
+        },
+      );
+
+    return () => {
+      // second
+      navigationButtonEventListener.remove();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [componentId]);
 
   // Function to pick a PDF document
   const pickDocument = async () => {
@@ -32,6 +94,7 @@ const HomeScreen = () => {
       if (typeof result.uri !== 'string') {
         return;
       }
+      setExtractedText([]);
       console.log('Selected PDF URL:', result.uri);
 
       // const textArray = await PDFPickerModule.extractTextFromPDF(pdfURL);
@@ -60,6 +123,37 @@ const HomeScreen = () => {
       }
     }
   };
+
+  const extractTextPDFkit = async () => {
+    try {
+      const result = await DocumentPicker.pickSingle({
+        type: [DocumentPicker.types.pdf], // Specify the file type you want to pick (PDF in this case)
+      });
+
+      console.log(
+        result.uri, // URI of the picked file
+        result.type, // MIME type of the picked file
+        result.name, // Name of the picked file
+        result.size, // Size of the picked file (in bytes)
+      );
+      if (typeof result.uri !== 'string') {
+        return;
+      }
+      setExtractedText([]);
+      console.log('Selected PDF URL:', result.uri);
+
+      const textArray = await pdfTextExtract.extractTextFromPDF(result.uri);
+      // console.log('AFTER CONVERT:', textArray);
+      setExtractedText(textArray);
+    } catch (err) {
+      if (DocumentPicker.isCancel(err)) {
+        // User canceled the picker
+      } else {
+        throw err;
+      }
+    }
+  };
+
   const changeFontSize = type => {
     switch (type) {
       case 'up':
@@ -86,40 +180,48 @@ const HomeScreen = () => {
   return (
     <View style={styles.homeContainer}>
       <FlatList
-        ListHeaderComponent={
-          <View row spread centerV>
-            <Button
-              size={Button.sizes.small}
-              label={'Choose'}
-              onPress={pickDocument}
-            />
-            <View row>
-              <Button
-                round
-                size={Button.sizes.small}
-                onPress={() => changeFontSize('down')}>
-                <MaterialCommunityIcons
-                  name="format-font-size-decrease"
-                  size={20}
-                  color={'white'}
-                />
-              </Button>
+        // ListHeaderComponent={
+        //   <View row spread centerV>
+        //     <View row>
+        //       <Button
+        //         size={Button.sizes.small}
+        //         label={'Choose'}
+        //         onPress={pickDocument}
+        //       />
+        //       <View marginL-10 />
+        //       <Button
+        //         size={Button.sizes.small}
+        //         label={'with PDFKit'}
+        //         onPress={extractTextPDFkit}
+        //       />
+        //     </View>
+        //     <View row>
+        //       <Button
+        //         round
+        //         size={Button.sizes.small}
+        //         onPress={() => changeFontSize('down')}>
+        //         <MaterialCommunityIcons
+        //           name="format-font-size-decrease"
+        //           size={20}
+        //           color={'white'}
+        //         />
+        //       </Button>
 
-              <View marginL-10>
-                <Button
-                  round
-                  size={Button.sizes.small}
-                  onPress={() => changeFontSize('up')}>
-                  <MaterialCommunityIcons
-                    name="format-font-size-increase"
-                    size={20}
-                    color={'white'}
-                  />
-                </Button>
-              </View>
-            </View>
-          </View>
-        }
+        //       <View marginL-10>
+        //         <Button
+        //           round
+        //           size={Button.sizes.small}
+        //           onPress={() => changeFontSize('up')}>
+        //           <MaterialCommunityIcons
+        //             name="format-font-size-increase"
+        //             size={20}
+        //             color={'white'}
+        //           />
+        //         </Button>
+        //       </View>
+        //     </View>
+        //   </View>
+        // }
         data={extractedText}
         renderItem={renderItem}
         keyExtractor={(item, index) => index.toString()}
@@ -131,12 +233,12 @@ const HomeScreen = () => {
 HomeScreen.screenName = routes.Home;
 HomeScreen.options = {
   topBar: {
-    visible: false,
-    title: {
-      text: 'Home',
-      color: 'white',
-      textAlign: 'left',
-    },
+    // visible: false,
+    hideOnScroll: true,
+    // title: {
+    //   text: 'Buddha Book',
+    //   color: 'white',
+    // },
     background: {
       color: 'black',
     },
